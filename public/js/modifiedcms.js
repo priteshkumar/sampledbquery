@@ -16,11 +16,10 @@ $(document).ready(function() {
   var titleInput = $("#title");
   var cmsForm = $("#cms");
   var user = $("#user");
+  //var fileform = $("#fileform");
 
   //gvis impl
-  $(function() {
-    $('#fileform').on('submit', uploadFiles);
-});
+  $("#fileform").on('submit', uploadFiles);
 
 
 function uploadFiles(event) {
@@ -193,7 +192,6 @@ function displayJSON(data) {
     evt.results = contents;
     document.dispatchEvent(evt);
 }
-
 
 
   // Adding an event listener for when the form is submitted
