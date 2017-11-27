@@ -1,44 +1,428 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>GOOGLECLOUDVISION</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-  <script type="text/javascript" src="js/modifiedcms.js"></script>
-  <style>
-  #fileform{
-    width:50%;
-    margin-top:30px;
-    margin-left:auto;
-    margin-right:auto;
-  }
-  #gsearch{
-    width:50%;
-    margin-left:auto;
-    margin-right:auto;
-    margin-top:30px;
-  }
-  #results{
-    width:50%;
-    margin-left:auto;
-    margin-right:auto;
-  }
-</style>
-</head>
-<body>
-  <form id="fileform" action="">
-    <select name="type">
-      <option value="WEB_DETECTION">WEB_DETECTION</option>
-      <option value="LANDMARK_DETECTION">LANDMARK_DETECTION</option>
-      <option value="FACE_DETECTION">FACE_DETECTION</option>
-      <option value="LABEL_DETECTION">LABEL_DETECTION</option>
-      <option value="TEXT_DETECTION">TEXT_DETECTION</option>
-      <option value="SAFE_SEARCH_DETECTION">SAFE_SEARCH_DETECTION</option>
 
-    </select><br />
-    <input type="file" name="fileField"><br /><br />
-    <input type="submit" name="submit" value="Submit">
-  </form>
-  <code style="white-space:pre" id="results"></code>
+<head>
+  <meta charset="utf-8">
+  <title>GifTastic</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+   <style>
+   body{
+    background: purple;
+    
+   }
+   #pageheader{
+    margin-top:0px;
+    color:white;
+    background: #212121;
+    font-size: 50px;
+    width:100%;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 60px;
+    opacity:0.9;
+    padding-top:15px;
+    padding-bottom:15px;
+    font-size: 44px;
+    font-family: verdana;
+    color:blue;
+    font-weight: bold;
+   }
+   
+   #buttonsdiv{
+    padding-top:20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+   }
+   button{
+    margin-right:5px;
+    margin-bottom:5px;
+    background-color: lightblue;
+   }
+   form{
+    color: black;
+   }
+   #add-music{
+    background: #212121;
+    font-weight: bold;
+    border:none;
+    margin-left:0px;
+    height: 34px;
+
+   }
+  #maincontainer{
+     padding-top:50px;
+  }
+  #imgs-appear-here{
+    
+     padding-left:20px;
+   }
+   p{
+    color: white;
+   }
+   label{
+    color: white;
+   }
+   
+
+   form {
+    padding-top:20px;
+    padding-bottom: 20px;
+    width:100%;
+   }
+   #mlabel{
+    background: #337ab7;
+    height:32px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-right: 0px;
+    font-size: 14px;
+    border-radius: 5px 5px;
+    min-width:14%;
+    text-align: center;
+    opacity:0.9;
+    font-weight: bold;
+   }
+   #geekinput{
+    width: 86%;
+    margin-right:0px;
+    padding-right:0px;
+   }
+   #music-input{
+    width:85%;
+    margin-left:0px;
+    padding-left:0px;
+   }
+   #glph{
+    margin-right:5px;
+   }
+   .glyphicon-gift{
+    font-size: 35px;
+   }
+  
+   </style>
+  
+  
+</head>
+
+<body>
+  <div class="container-full">
+  <div class="row">
+  <div class="col-xs-12 text-center">
+  <div id="header"> 
+  <h2 id="pageheader"><span class="glyphicon glyphicon-gift" id="glph" aria-hidden="true">ImageAnalyser</span></h2>
+  </div>
+  </div>
+  </div>
+  </div>
+  <div class="container">
+  <div class="col-xs-6">
+       <form class="form-inline" id="fileform">
+         <div class="form-group" id="fileinput">
+           <input id="fileinp" type="file" name="filefield">
+          </div>
+          <input id="imgselect" class="btn btn-primary" type="submit" value="SubmitImage">
+      </form>
+    </div>
+  <div class="col-xs-6">
+       <form class="form-inline" id="imgtagsearch">
+         <div class="form-group" id="imgtaginput">
+         <label for="imgtag-input" id="mlabel">ImageFun</label>
+         <input type="text" class="form-control" id="imgtag-input" placeholder="Add tag">
+         </div>
+          <input id="add-imgtag" class="btn btn-primary" type="submit" value="Search">
+        </form>
+    </div>
+  </div> 
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="buttonsdiv">
+         </div>
+      </div>
+     </div>
+  </div>
+  <div id="maincontainer" class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="imgs-appear-here">
+        </div>
+      </div>
+      
+     </div>
+   </div>
+  
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+  
+  var topics = ["tesla","steve jobs","mark zuckerberg","cloud computing","physics","CPU","mathematics",
+                "google","space","mars rover","space shuttle","minecraft"];
+
+  var gvisapiKey = "AIzaSyA61FTMTWGKCwkTzf0IkCM78Edj9xNNoiQ";
+  var GVIS_URL = 'https://vision.googleapis.com/v1/images:annotate?key=' + gvisapiKey;
+  var gsearchapiKey = "AIzaSyCnfj0wY8BNRF-ycLyQIRcCdzoPH5950io"; 
+  var gsearchId = "013265839881010569053:kpoamhrulqo";
+  var GSEARCH_URL = "https://www.googleapis.com/customsearch/v1?key=" + gsearchapiKey + "&cx=" + gsearchId; 
+  var seatgeek_id = "OTY4MTUyNHwxNTEwOTg4NTM2LjA1";
+  var seatgeek_appid = "184216165545f82715a9ce5164f97b59bae40a1a698dfdf2a353e844f9f4010d";
+  var SEATGEEK_PERFORMER_URL = "https://api.seatgeek.com/2/performers?";
+  var SEATGEEK_GEOLOCATION_URL = "https://api.seatgeek.com/2/";
+  var gvisInfo = {};
+  var gsearchInfo = {};
+
+  //gvis impl
+  $("#fileform").on('submit', uploadFiles);
+
+
+function uploadFiles(event) {
+    event.preventDefault(); // Prevent the default form post
+
+    // Grab the file and asynchronously convert to base64.
+    var file = $('#fileform [name=filefield]')[0].files[0];
+    console.log(file);
+    var reader = new FileReader();
+    reader.onloadend = processFile;
+    reader.readAsDataURL(file);
+}
+
+
+function processFile(event) {
+    var content = event.target.result;
+    analyseinCloudVis(content.replace('data:image/jpeg;base64,', ''));
+}
+
+
+function analyseinCloudVis(content) {
+    var type = $('#fileform [name=type]').val();
+
+    // Strip out the file prefix when you convert to json.
+    var request = {
+        requests: [{
+                image: {
+                    content: content
+                },
+                features: [{
+                        type: "LANDMARK_DETECTION",
+                        maxResults: 10
+                    }, {
+                        type: "LABEL_DETECTION",
+                        maxResults: 10
+                    }, {
+                        type: "WEB_DETECTION",
+                        maxResults: 30
+                    },
+                    {
+                        type: "TEXT_DETECTION",
+                        maxResults: 20
+                    },
+                     {
+                        type: "SAFE_SEARCH_DETECTION",
+                        maxResults: 5
+                    }
+                ]
+            }
+        ]
+    };
+
+    console.log("sending gvis post");
+    $.post({
+            url: GVIS_URL,
+            data: JSON.stringify(request),
+            contentType: 'application/json'
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            $('#results').text('ERRORS: ' + textStatus + ' ' + errorThrown);
+        }).done(parseResults);
+
+
+}
+
+
+function parseResults(data) {
+
+     var imgDesc = {};
+     gvisInfo = Object.assign({},data);
+     console.log("gvisinfo " +  gvisInfo);
+     console.log(gvisInfo.responses);
+
+    var labels = data.responses[0].labelAnnotations;
+    for (var i = 0; i < labels.length; i++) {
+        console.log("labels-" + (i + 1) + " " + labels[i].description);
+    }
+
+    imgDesc.label = labels[0].description;
+
+    if (data.responses[0].landmarkAnnotations !== undefined) {
+        var landmarks = data.responses[0].landmarkAnnotations;
+        for (var i = 0; i < landmarks.length; i++) {
+            console.log(landmarks[i].description);
+        }
+        imgDesc.landmark = landmarks[0].description;
+    }
+
+
+    var webidentity = data.responses[0].webDetection.webEntities;
+    for (var i = 0; i < webidentity.length; i++) {
+        console.log("webinfo-" + i + 1 + " " + webidentity[i].description);
+    }
+
+    imgDesc.webinfo = webidentity[0].description;
+
+    var matchingImages = data.responses[0].webDetection.fullMatchingImages;
+    if(matchingImages !== undefined && matchingImages.length > 0){
+    for (var i = 0; i < matchingImages.length; i++) {
+        console.log(matchingImages[i].url);
+    }
+  
+    imgDesc.matchingimage = matchingImages[0].url;
+    
+   }
+   
+    console.log(imgDesc);
+
+    var searchReq = {};
+    if(imgDesc.landmark !== undefined && imgDesc.landmark !== null){
+       searchReq.q = imgDesc.landmark;
+    }
+    else{
+      searchReq.q = imgDesc.webinfo;
+    }
+    
+     
+    console.log("searchquery: " + searchReq);
+    $.get(GSEARCH_URL,{q:searchReq.q,num:10}).fail(function(jqXHR, textStatus, errorThrown) {
+            $('#results').text('ERRORS: ' + textStatus + ' ' + errorThrown);
+        }).done(displaySearchResults);
+
+}
+
+
+function displaySearchResults(data){
+  //console.log("searchres: " + data);
+  gsearchInfo = Object.assign({},data);
+  console.log("logging gsearch object");
+  console.log(gsearchInfo);
+  var searchres = data.items;
+  for(var i=0;i < searchres.length;i++){
+    console.log(searchres[i].displayLink);
+    console.log(searchres[i].formattedUrl);
+    console.log(searchres[i].htmlSnippet);
+    console.log(searchres[i].htmlTitle);
+    //console.log(searchres[i].pagemap.cse_image[0].src);
+    //console.log(searchres[i].pagemap.cse_thumbnail[0].src);
+
+  }
+  displayImages(gvisInfo,gsearchInfo);
+}
+
+
+
+  function renderButtons(){
+    $("#buttonsdiv").empty();
+    for (var i=0;i<topics.length;i++)
+    {
+      var $btndiv = $("<button>");
+      $btndiv.addClass("btn btn-primary");
+      $btndiv.css("background","blue");
+      $btndiv.css("margin-right","5px");
+      $btndiv.css("margin-bottom","5px");
+      $btndiv.css("opacity","0.8");
+      $btndiv.addClass("musician");
+      $btndiv.attr("data-musician",topics[i]);
+      $btndiv.text(topics[i]);
+      //$btndiv.bind("click",displayMusicgifs);
+      $("#buttonsdiv").append($btndiv);
+    }
+  }
+
+    $("#add-imgtag").on("click",function(){
+        event.preventDefault();
+        console.log("addimgtagclicked");
+        var $imgtag = $("#imgtag-input").val().trim();
+        console.log($imgtag);
+        if($imgtag.length >= 2){
+        topics.push($imgtag);
+        $("#imgtag-input").val("");
+        //renderButtons();
+      }
+    });
+
+
+    function generateImageview(url){
+          var $imgDiv  = $("<div>");
+          $imgDiv.css("float","left");
+          $imgDiv.css("padding-right","15px");
+          $imgDiv.css("padding-bottom","10px");
+          $imgDiv.css("padding-top","5px");
+          var $im =  $("<img>");
+          $im.addClass("img-responsive");
+          $im.css("border","2px solid #191970");
+          $im.css("border-radius","10px 10px");
+          //$im.attr("height","200px");
+          $im.attr("src",url);
+          $imgDiv.append($im);
+
+          $("#imgs-appear-here").append($imgDiv);
+        
+    }
+
+
+
+
+    function generateIframeview(url){
+      var $iframediv = $("<div>");
+      $iframediv.css("float","left");
+      $iframediv.css("padding-right","15px");
+      $iframediv.css("padding-bottom","10px");
+      $iframediv.css("padding-top","5px");
+      $iframediv.attr("class","col-sm-8");    
+      var $iframe = $("<iframe>");
+      $iframe.attr({"src":url,"width":"920px","height":"500px"});
+      $iframediv.append($iframe);
+      $("#imgs-appear-here").append($iframediv);
+
+    }
+    
+
+
+
+    function displayImages(gvisInfo,gsearchInfo) {
+      console.log("btnclicked");
+         console.log(gvisInfo.responses);
+         $("#imgs-appear-here").empty();
+         var fullmatchingImgs = gvisInfo.responses[0].webDetection.fullMatchingImages;
+         for (var i = 0; i < 1; i++) {
+              generateImageview(fullmatchingImgs[0].url);
+           }
+         
+/*
+         var partialmatchingImgs = gvisInfo.responses[0].webDetection.partialMatchingImages;
+         for (var i = 0; i < fullmatchingImgs.length; i++) {
+              generateImageview(partialmatchingImgs[i].url);
+           }
+        
+        var visuallysimilarImgs = gvisInfo.responses[0].webDetection.visuallySimilarImages;
+         for (var i = 0; i < fullmatchingImgs.length; i++) {
+              generateImageview(partialmatchingImgs[i].url);
+           }
+  */ 
+        if(gvisInfo.responses[0].webDetection.pagesWithMatchingImages !== undefined){
+          var pagesWithMatchingImages = gvisInfo.responses[0].webDetection.pagesWithMatchingImages;
+          for(var i=0,count=2;i < count;i++){
+            generateIframeview(pagesWithMatchingImages[i].url);
+          }
+        }
+
+        var gsearchItems = gsearchInfo.items;
+        for(var i=0;i < 1;i++){
+          generateIframeview(gsearchItems[i].formattedUrl);
+        }
+
+        var youtubeUrl= "https://www.youtube.com/embed/uJDy8Taz66o?list=RDuJDy8Taz66o";
+        generateIframeview(youtubeUrl);
+    }
+    //renderButtons();
+   }); 
+  </script>
 </body>
 </html>
